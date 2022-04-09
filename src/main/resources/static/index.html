@@ -25,6 +25,7 @@
         <tr>
             <th>ID</th>
             <th>Название</th>
+            <th>Категория</th>
             <th>Цена</th>
             <th>Удалить</th>
             <th>Добавить в корзину</th>
@@ -34,6 +35,7 @@
         <tr ng-repeat="p in products">
             <td>{{p.id}}</td>
             <td>{{p.title}}</td>
+            <td>{{p.categoryTitle}}</td>
             <td>{{p.price}}</td>
             <td>
                 <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>
@@ -57,6 +59,12 @@
                    placeholder="Цена">
         </div>
         <div class="col-auto">
+            <select class="form-control" id="newProductCategoryTitle" ng-model="newProduct.categoryTitle">
+                <option ng-repeat="c in categories">{{c.title}}
+                </option>
+            </select>
+        </div>
+        <div class="col-auto">
             <button type="submit" class="btn btn-primary mb-3">Создать</button>
         </div>
     </form>
@@ -64,19 +72,37 @@
 
     <h3>Корзина</h3>
     <p></p>
+    <button class="btn btn-primary" ng-click="clearCart()">Очистить корзину</button>
+    <p></p>
     <table class="table table-hover">
         <thead>
         <tr>
+            <th>Удалить</th>
             <th>ID</th>
             <th>Название</th>
-            <th>Цена</th>
+            <th>Цена за шт.</th>
+            <th>Количество</th>
+            <th>Стоимость</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="p in cart">
-            <td>{{p.id}}</td>
-            <td>{{p.title}}</td>
+        <tr ng-repeat="p in cart.items">
+            <td>
+                <button class="btn btn-danger btn-sm" ng-click="deleteProductFromCart(p.productId)">╳</button>
+            </td>
+            <td>{{p.productId}}</td>
+            <td>{{p.productTitle}}</td>
+            <td>{{p.pricePerProduct}}</td>
+            <td>
+                <button class="btn btn-primary btn-sm" ng-click="removeItemFromCart(p.productId)">-</button>
+                {{p.quantity}}
+                <button class="btn btn-primary btn-sm" ng-click="addProductToCart(p.productId)">+</button>
+            </td>
             <td>{{p.price}}</td>
+        </tr>
+        <tr>
+            <td colspan="5" style="text-align: right">Общая стоимость</td>
+            <td style="font-weight: bold">{{cart.totalPrice}}</td>
         </tr>
         </tbody>
     </table>

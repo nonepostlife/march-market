@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.march.market.converters.ProductConverter;
 import ru.geekbrains.march.market.dtos.ProductDto;
 import ru.geekbrains.march.market.exceptions.ResourceNotFoundException;
-import ru.geekbrains.march.market.entities.Product;
 import ru.geekbrains.march.market.services.ProductService;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class ProductController {
     private final ProductConverter productConverter;
 
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductDto> getAllProducts() {
         return productService.findAll();
     }
 
