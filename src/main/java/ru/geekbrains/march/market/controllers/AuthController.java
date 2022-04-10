@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -43,10 +44,8 @@ public class AuthController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
-        String jwt = authHeader.substring(7);
-        String username = jwtTokenUtil.getUsernameFromToken(jwt);
+    public ResponseEntity<?> getUserInfo() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         User user = userService.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", username)));
         return ResponseEntity.ok(new ProfileDto(user.getUsername(), user.getEmail(), DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(user.getCreatedAt().toLocalDate())));
     }
