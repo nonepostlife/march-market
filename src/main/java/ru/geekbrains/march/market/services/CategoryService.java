@@ -12,6 +12,7 @@ import ru.geekbrains.march.market.repositories.ProductRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,5 +28,16 @@ public class CategoryService {
     public List<CategoryDto> findAll() {
         List<Category> categoryList = categoryRepository.findAll();
         return categoryList.stream().map(categoryConverter::entityToDto).collect(Collectors.toList());
+    }
+
+    public static final Function<Category, ru.geekbrains.march.market.soap.categories.Category> functionEntityToSoap = ce -> {
+        ru.geekbrains.march.market.soap.categories.Category c = new ru.geekbrains.march.market.soap.categories.Category();
+        c.setTitle(ce.getTitle());
+        ce.getProducts().stream().map(ProductService.functionEntityToSoap).forEach(s -> c.getProducts().add(s));
+        return c;
+    };
+
+    public ru.geekbrains.march.market.soap.categories.Category getByTitle(String title) {
+        return categoryRepository.findByTitle(title).map(functionEntityToSoap).get();
     }
 }

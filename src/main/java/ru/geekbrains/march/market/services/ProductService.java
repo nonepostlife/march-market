@@ -11,6 +11,7 @@ import ru.geekbrains.march.market.repositories.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,5 +40,22 @@ public class ProductService {
 
     public Optional<Product> findById(Long id) {
         return productRepository.findById(id);
+    }
+
+    public static final Function<Product, ru.geekbrains.march.market.soap.products.Product> functionEntityToSoap = pe -> {
+        ru.geekbrains.march.market.soap.products.Product p = new ru.geekbrains.march.market.soap.products.Product();
+        p.setId(pe.getId());
+        p.setTitle(pe.getTitle());
+        p.setPrice(pe.getPrice());
+        p.setCategoryTitle(pe.getCategory().getTitle());
+        return p;
+    };
+
+    public List<ru.geekbrains.march.market.soap.products.Product> getAllProducts() {
+        return productRepository.findAll().stream().map(functionEntityToSoap).collect(Collectors.toList());
+    }
+
+    public ru.geekbrains.march.market.soap.products.Product getProductById(Long id) {
+        return productRepository.findById(id).map(functionEntityToSoap).get();
     }
 }
