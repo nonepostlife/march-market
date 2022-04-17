@@ -18,34 +18,34 @@ insert into categories (title) values
 ('Food'),
 ('Electronic');
 
-insert into products (title, price, category_id) values
-('Bread', 32.00, 1),
-('Milk', 120.00, 1),
-('Butter', 320.00, 1),
-('Cheese', 500.00, 1);
+insert into products (title, price, category_id)
+values ('Bread', 32.00, 1),
+       ('Milk', 120.00, 1),
+       ('Butter', 320.00, 1),
+       ('Cheese', 500.00, 1);
 
 create table users (
-                       id         bigserial primary key,
-                       username   varchar(36) not null,
-                       password   varchar(80) not null,
-                       email      varchar(50) unique,
-                       created_at timestamp default current_timestamp,
-                       updated_at timestamp default current_timestamp
+    id         bigserial primary key,
+    username   varchar(36) not null,
+    password   varchar(80) not null,
+    email      varchar(50) unique,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
 );
 
 create table roles (
-                       id         bigserial primary key,
-                       name       varchar(50) not null,
-                       created_at timestamp default current_timestamp,
-                       updated_at timestamp default current_timestamp
+    id         bigserial primary key,
+    name       varchar(50) not null,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
 );
 
 create table users_roles (
-                             user_id    bigint not null references users (id),
-                             role_id    bigint not null references roles (id),
-                             created_at timestamp default current_timestamp,
-                             updated_at timestamp default current_timestamp,
-                             primary key (user_id, role_id)
+    user_id    bigint not null references users (id),
+    role_id    bigint not null references roles (id),
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp,
+    primary key (user_id, role_id)
 );
 
 insert into roles (name)
@@ -71,12 +71,13 @@ create table orders
 
 create table orders_items
 (
-    id                      bigserial primary key,
-    order_id                bigint references users (id),
-    product_id              bigint references products (id),
+    id                      bigserial,
+    order_id                bigint not null references orders (id),
+    product_id              bigint not null references products (id),
     price_per_product       numeric(8, 2),
     quantity                int,
     price                   numeric(8, 2),
     created_at              timestamp default current_timestamp,
-    updated_at              timestamp default current_timestamp
+    updated_at              timestamp default current_timestamp,
+    primary key (id, order_id)
 );

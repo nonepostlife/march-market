@@ -26,6 +26,8 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
 
                     $scope.user.username = null;
                     $scope.user.password = null;
+
+                    $scope.loadOrders();
                 }
             }, function errorCallback(response) {
             });
@@ -115,10 +117,23 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
     };
 
     $scope.createOrder = function () {
-
+        $http.post('http://localhost:8189/market-core/api/v1/orders/checkout')
+            .then(function (response) {
+                $scope.loadCart();
+                $scope.loadOrders();
+            });
     }
+
+    $scope.loadOrders = function () {
+        $http.get('http://localhost:8189/market-core/api/v1/orders')
+            .then(function (response) {
+                $scope.orders = response.data;
+                // console.log(response);
+            });
+    };
 
     $scope.getCategories();
     $scope.loadProducts();
     $scope.loadCart();
+    $scope.loadOrders();
 });
