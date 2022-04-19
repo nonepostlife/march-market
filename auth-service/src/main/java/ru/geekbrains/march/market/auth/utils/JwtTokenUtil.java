@@ -1,4 +1,4 @@
-package ru.geekbrains.march.market.core.utils;
+package ru.geekbrains.march.market.auth.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
