@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 public class OrderConverter {
     private final OrderItemConverter orderItemConverter;
 
-    public OrderDto entityToDto(Order o) {
-        return new OrderDto(o.getId(), o.getUser().getId(), o.getTotalPrice(),
-                o.getItems().stream().map(orderItemConverter::entityToDto).collect(Collectors.toList()), o.getCreatedAt());
-    }
+//    public OrderDto entityToDto(Order o) {
+//        return new OrderDto(o.getId(), o.getUser().getId(), o.getTotalPrice(),
+//                o.getItems().stream().map(orderItemConverter::entityToDto).collect(Collectors.toList()), o.getCreatedAt());
+//    }
 }

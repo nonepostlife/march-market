@@ -23,12 +23,12 @@ public class OrderController {
     @PostMapping("checkout")
     @ResponseStatus(HttpStatus.CREATED)
     public void createNewOrder(Principal principal) {
-        orderService.createNewOrder(principal.getName());
+        //orderService.createNewOrder(principal.getName());
     }
 
-    @GetMapping
-    public List<OrderDto> getAllOrders(Principal principal) {
-        return orderService.getAllOrders(principal.getName());
-    }
+//    @GetMapping
+//    public List<OrderDto> getAllOrders(Principal principal) {
+//        return orderService.getAllOrders(principal.getName());
+//    }
 
 }
