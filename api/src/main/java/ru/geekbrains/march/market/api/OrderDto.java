@@ -8,7 +8,7 @@ import java.util.List;
 
 public class OrderDto {
     private Long id;
-    private Long userId;
+    private String username;
     private BigDecimal totalPrice;
     private List<OrderItemDto> items;
     private String createdAt;
@@ -16,9 +16,9 @@ public class OrderDto {
     public OrderDto() {
     }
 
-    public OrderDto(Long id, Long userId, BigDecimal totalPrice, List<OrderItemDto> items, LocalDateTime createdAt) {
+    public OrderDto(Long id, String username, BigDecimal totalPrice, List<OrderItemDto> items, LocalDateTime createdAt) {
         this.id = id;
-        this.userId = userId;
+        this.username = username;
         this.totalPrice = totalPrice;
         this.items = items;
         this.createdAt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(createdAt);
@@ -32,12 +32,12 @@ public class OrderDto {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public BigDecimal getTotalPrice() {
@@ -61,7 +61,7 @@ public class OrderDto {
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(createdAt);;
+        this.createdAt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(createdAt);
     }
 }
 
