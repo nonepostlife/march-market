@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends CrudRepository<Order, Long> {
-    //List<Order> findAllByUser(User user);
+    List<Order> findAllByUsername(String username);
 }

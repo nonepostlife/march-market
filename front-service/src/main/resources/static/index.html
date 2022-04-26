@@ -4,17 +4,15 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/ngStorage.min.js"></script>
     <script src="index.js"></script>
 </head>
 
 <body>
-
 <div class="container" ng-controller="indexController">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -121,7 +119,7 @@
     <div ng-show="isUserLoggedIn()">
         <h3>Заказы</h3>
         <p></p>
-        <div ng-repeat="o in orders" >
+        <div ng-repeat="o in orders">
             <h5>Заказ № {{o.id}}</h5>
             <h6>Общая стоимость: {{o.totalPrice}}</h6>
             <h6>Дата создания: {{o.createdAt}}</h6>

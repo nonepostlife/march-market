@@ -43,4 +43,12 @@ public class OrderItem {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public OrderItem(Order order, Product product, BigDecimal pricePerProduct, BigDecimal price, int quantity) {
+        this.order = order;
+        this.product = product;
+        this.pricePerProduct = pricePerProduct;
+        this.price = price;
+        this.quantity = quantity;
+    }
 }
