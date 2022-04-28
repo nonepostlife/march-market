@@ -12,47 +12,34 @@ import ru.geekbrains.march.market.api.ProductDto;
 
 import java.math.BigDecimal;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.CoreMatchers.is;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class ProductControllerTest {
+public class OrderControllerTest {
     @Autowired
     private MockMvc mvc;
 
     @Test
-    public void getAllProductsTest() throws Exception {
+    public void getAllOrderTest() throws Exception {
         mvc
                 .perform(
-                        get("/api/v1/products")
+                        get("/api/v1/orders")
                                 .contentType(MediaType.APPLICATION_JSON)
-
+                                .header("username", "bob")
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(5)))
-                .andExpect(jsonPath("$[3].title", is("Масло")));
-    }
-
-    @Test
-    public void createProductTest() throws Exception {
-        ProductDto productDto = new ProductDto(null, "Demo", BigDecimal.valueOf(100.00),"Еда");
-        mvc
-                .perform(
-                        post("/api/v1/products")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(new ObjectMapper().writeValueAsString(productDto))
-                                .header("username", "Bob") // Здесь не особо нужно
-                )
-                .andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[1].totalPrice", is(1280.00)))
+                .andExpect(jsonPath("$[0].items[0].productTitle", is("Молоко")));
     }
 }

@@ -44,3 +44,12 @@ create table orders_items
     created_at              timestamp default current_timestamp,
     updated_at              timestamp default current_timestamp
 );
+
+insert into orders (username, total_price)
+values ('bob', 441.00),
+       ('bob', 1280.00);
+
+insert into orders_items (order_id, product_id, price_per_product, quantity, price)
+values (1, 1, 100.20, 2, 200.40),
+       (1, 2, 80.20, 3, 240.60),
+       (2, 4, 320.00, 4, 1280.00);
