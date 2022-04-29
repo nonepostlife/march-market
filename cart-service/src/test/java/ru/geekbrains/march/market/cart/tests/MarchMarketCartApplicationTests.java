@@ -1,4 +1,4 @@
-package ru.geekbrains.march.market.cart;
+package ru.geekbrains.march.market.cart.tests;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

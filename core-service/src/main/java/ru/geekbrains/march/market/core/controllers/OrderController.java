@@ -14,7 +14,7 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("checkout")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createNewOrder(@RequestHeader String username) {
         orderService.createNewOrder(username);

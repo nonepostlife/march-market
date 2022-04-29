@@ -1,6 +1,5 @@
 package ru.geekbrains.march.market.core.tests;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.geekbrains.march.market.api.ProductDto;
+import ru.geekbrains.march.market.core.converters.ProductConverter;
 import ru.geekbrains.march.market.core.entities.Category;
 import ru.geekbrains.march.market.core.repositories.ProductRepository;
 import ru.geekbrains.march.market.core.services.CategoryService;
@@ -21,12 +21,12 @@ import java.util.Optional;
 public class ProductServiceTests {
     @Autowired
     private ProductService productService;
-
     @MockBean
     private ProductRepository productRepository;
-
     @MockBean
     private CategoryService categoryService;
+    @MockBean
+    private ProductConverter productConverter;
 
     @Test
     public void createNewProductTest() {
@@ -38,7 +38,7 @@ public class ProductServiceTests {
                 .when(categoryService)
                 .findByTitle("Еда");
 
-        ProductDto productDto = new ProductDto(null, "Апельсины", BigDecimal.valueOf(100.0), "Food");
+        ProductDto productDto = new ProductDto(null, "Апельсины", BigDecimal.valueOf(100.0), "Еда");
         productService.createNewProduct(productDto);
 
         Mockito.verify(productRepository, Mockito.times(1)).save(ArgumentMatchers.any());

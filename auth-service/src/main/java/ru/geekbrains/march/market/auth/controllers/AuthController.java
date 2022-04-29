@@ -42,8 +42,7 @@ public class AuthController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<?> getUserInfo() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+    public ResponseEntity<?> getUserInfo(@RequestHeader String username) {
         User user = userService.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", username)));
         return ResponseEntity.ok(new ProfileDto(user.getUsername(), user.getEmail(), DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(user.getCreatedAt().toLocalDate())));
     }
