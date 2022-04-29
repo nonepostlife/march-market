@@ -36,19 +36,19 @@ public class CartServiceTests {
                 .when(productService)
                 .findById(3L);
 
-        cartService.addToCart(1L);
-        cartService.addToCart(1L);
-        cartService.addToCart(2L);
-        cartService.addToCart(2L);
-        cartService.removeItemFromCart(1L);
-        cartService.deleteProductFromCart(1L);
-        Cart cart = cartService.getCurrentCart();
+        cartService.addToCart("bob", 1L);
+        cartService.addToCart("bob", 1L);
+        cartService.addToCart("bob", 2L);
+        cartService.addToCart("bob", 2L);
+        cartService.removeItemFromCart("bob", 1L);
+        cartService.deleteProductFromCart("bob", 1L);
+        Cart cart = cartService.getCurrentCart("bob");
         Assertions.assertEquals(1, cart.getItems().size());
         Assertions.assertEquals(2, cart.getItems().get(0).getQuantity());
         Assertions.assertEquals(BigDecimal.valueOf(200.0), cart.getTotalPrice());
 
-        cartService.clearCart();
-        Cart cart2 = cartService.getCurrentCart();
+        cartService.clearCart("bob");
+        Cart cart2 = cartService.getCurrentCart("bob");
         Assertions.assertEquals(0, cart2.getItems().size());
         Assertions.assertEquals(BigDecimal.valueOf(0), cart2.getTotalPrice());
     }

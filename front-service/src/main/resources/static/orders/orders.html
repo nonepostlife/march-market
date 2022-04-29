@@ -1,0 +1,31 @@
+<div>
+    <p></p>
+    <h3>Заказы</h3>
+    <p></p>
+    <div ng-repeat="o in orders">
+        <h5>Заказ № {{o.id}}</h5>
+        <h6>Общая стоимость: {{o.totalPrice}}</h6>
+        <h6>Дата создания: {{o.createdAt}}</h6>
+        <p></p>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Цена за шт.</th>
+                <th>Количество</th>
+                <th>Стоимость</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="p in o.items">
+                <td>{{p.id}}</td>
+                <td>{{p.productTitle}}</td>
+                <td>{{p.pricePerProduct}}</td>
+                <td>{{p.quantity}}</td>
+                <td>{{p.price}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -30,7 +30,10 @@ public class OrderService {
 
     @Transactional
     public void createNewOrder(String username) {
-        CartDto cart = cartServiceIntegration.getCurrentCart();
+        CartDto cart = cartServiceIntegration.getCurrentUserCart(username);
+        if (cart.getItems().isEmpty()) {
+            throw new IllegalStateException("Нельзя оформить заказ для пустой корзины");
+        }
         Order order = new Order();
         order.setUsername(username);
         order.setTotalPrice(cart.getTotalPrice());
