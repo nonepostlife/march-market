@@ -7,40 +7,44 @@ import ru.geekbrains.march.market.cart.integrations.ProductServiceIntegration;
 import ru.geekbrains.march.market.cart.utils.Cart;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class CartService {
-    private final ProductServiceIntegration productService;
-    private Cart cart;
+    private final ProductServiceIntegration productServiceIntegration;
+    private Map<String, Cart> carts;
 
     @PostConstruct
     public void init() {
-        cart = new Cart();
-        cart.setItems(new ArrayList<>());
+        carts = new HashMap<>();
     }
 
-    public Cart getCurrentCart() {
-        return cart;
+    public Cart getCurrentCart(String cartId) {
+        if (!carts.containsKey(cartId)) {
+            Cart cart = new Cart();
+            carts.put(cartId, cart);
+        }
+        return carts.get(cartId);
     }
 
-    public void addToCart(Long productId) {
-        ProductDto p = productService.findById(productId);
-        cart.add(p);
+    public void addToCart(String cartId, Long productId) {
+        ProductDto p = productServiceIntegration.findById(productId);
+        getCurrentCart(cartId).add(p);
     }
 
-    public void clearCart() {
-        cart.clear();
+    public void clearCart(String cartId) {
+        getCurrentCart(cartId).clear();
     }
 
-    public void deleteProductFromCart(Long productId) {
-        ProductDto p = productService.findById(productId);
-        cart.delete(p);
+    public void deleteProductFromCart(String cartId, Long productId) {
+        ProductDto p = productServiceIntegration.findById(productId);
+        getCurrentCart(cartId).delete(p);
     }
 
-    public void removeItemFromCart(Long productId) {
-        ProductDto p = productService.findById(productId);
-        cart.remove(p);
+    public void removeItemFromCart(String cartId, Long productId) {
+        ProductDto p = productServiceIntegration.findById(productId);
+        getCurrentCart(cartId).remove(p);
     }
 }

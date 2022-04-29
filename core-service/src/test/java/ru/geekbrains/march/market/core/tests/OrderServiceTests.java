@@ -54,7 +54,7 @@ public class OrderServiceTests {
         cart.setTotalPrice(BigDecimal.valueOf(125));
         Mockito.doReturn(cart)
                 .when(cartServiceIntegration)
-                .getCurrentCart();
+                .getCurrentUserCart("bob");
 
         Category category = new Category();
         category.setId(1L);
