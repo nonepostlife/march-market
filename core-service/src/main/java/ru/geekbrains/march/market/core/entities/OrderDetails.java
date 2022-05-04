@@ -6,31 +6,30 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "orders_details")
 @NoArgsConstructor
 @Data
-public class Order {
+public class OrderDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @JoinColumn(name = "username")
-    private String username;
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    @Column(name = "total_price")
-    private BigDecimal totalPrice;
+    @Column(name = "address")
+    private String address;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> items;
+    @Column(name = "phone")
+    private String phone;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-    private OrderDetails orderDetails;
+    @Column(name = "add_info")
+    private String addInfo;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -39,4 +38,11 @@ public class Order {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public OrderDetails(Order order, String address, String phone, String addInfo) {
+        this.order = order;
+        this.address = address;
+        this.phone = phone;
+        this.addInfo = addInfo;
+    }
 }

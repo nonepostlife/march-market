@@ -51,6 +51,12 @@ public class CartController {
         cartService.removeItemFromCart(currentCartId, productId);
     }
 
+    @GetMapping("/{guestCartId}/merge")
+    public void mergeGuestCartWithUserCart(@RequestHeader(required = false) String username, @PathVariable String guestCartId) {
+        cartService.mergeCart(username, guestCartId);
+        cartService.clearCart(guestCartId);
+    }
+
     private String selectCartId(String username, String guestCartId) {
         if (username != null) {
             return username;

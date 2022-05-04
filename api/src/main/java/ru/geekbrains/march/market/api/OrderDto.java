@@ -1,6 +1,7 @@
 package ru.geekbrains.march.market.api;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -11,16 +12,18 @@ public class OrderDto {
     private String username;
     private BigDecimal totalPrice;
     private List<OrderItemDto> items;
+    private String deliverAddress;
     private String createdAt;
 
     public OrderDto() {
     }
 
-    public OrderDto(Long id, String username, BigDecimal totalPrice, List<OrderItemDto> items, LocalDateTime createdAt) {
+    public OrderDto(Long id, String username, BigDecimal totalPrice, List<OrderItemDto> items, String deliverAddress, LocalDateTime createdAt) {
         this.id = id;
         this.username = username;
         this.totalPrice = totalPrice;
         this.items = items;
+        this.deliverAddress = deliverAddress;
         this.createdAt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(createdAt);
     }
 
@@ -60,8 +63,12 @@ public class OrderDto {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(createdAt);
+    public String getDeliverAddress() {
+        return deliverAddress;
+    }
+
+    public void setDeliverAddress(String deliverAddress) {
+        this.deliverAddress = deliverAddress;
     }
 }
 

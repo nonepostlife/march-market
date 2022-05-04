@@ -34,10 +34,16 @@ angular.module('market').controller('cartController', function ($rootScope, $sco
     }
 
     $scope.createOrder = function () {
-        $http.post('http://localhost:5555/core/api/v1/orders')
-            .then(function (response) {
-                $scope.loadCart();
-            });
+        if ($scope.address.country == null || $scope.address.zip == null || $scope.address.city == null ||
+            $scope.address.address == null || $scope.address.phone == null) {
+
+        } else {
+            $http.post('http://localhost:5555/core/api/v1/orders', $scope.address)
+                .then(function (response) {
+                    $scope.loadCart();
+                    $scope.address = null;
+                });
+        }
     }
 
     $scope.guestCreateOrder = function () {

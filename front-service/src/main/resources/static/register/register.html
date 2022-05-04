@@ -1,0 +1,31 @@
+<div class="container">
+    <p></p>
+    <form ng-submit="registerNewUser()">
+        <div class="form-group">
+            <label for="inputUsername">Логин</label>
+            <input ng-model="user.username" type="text" class="form-control" id="inputUsername"
+                   placeholder="Введите имя пользователя">
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">Электронная почта</label>
+            <input ng-model="user.email" type="email" class="form-control" id="inputEmail"
+                   placeholder="name@example.com">
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Пароль</label>
+            <input ng-model="user.password" type="password" class="form-control" id="inputPassword"
+                   placeholder="Введите пароль">
+        </div>
+        <div class="form-group">
+            <label for="inputConfirmPassword">Подтвердите пароль</label>
+            <input ng-model="user.confirmPassword" type="password" class="form-control" id="inputConfirmPassword"
+                   placeholder="Подтвердите пароль">
+        </div>
+        <button type="submit" class="btn btn-primary">Зарегистрировать</button>
+    </form>
+    <p></p>
+    <div class="form-group">
+        <a href="#!/auth">Уже есть аккаунт?</a>
+    </div>
+    <p></p>
+</div>
