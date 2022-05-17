@@ -2,10 +2,12 @@ package ru.geekbrains.march.market.core.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.march.market.api.ContactInfo;
 import ru.geekbrains.march.market.api.CartDto;
 import ru.geekbrains.march.market.api.OrderDto;
 import ru.geekbrains.march.market.core.converters.OrderConverter;
 import ru.geekbrains.march.market.core.entities.Order;
+import ru.geekbrains.march.market.core.entities.OrderDetails;
 import ru.geekbrains.march.market.core.entities.OrderItem;
 import ru.geekbrains.march.market.core.exceptions.ResourceNotFoundException;
 import ru.geekbrains.march.market.core.integrations.CartServiceIntegration;
@@ -29,7 +31,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void createNewOrder(String username) {
+    public void createNewOrder(String username, ContactInfo contactInfo) {
         CartDto cart = cartServiceIntegration.getCurrentUserCart(username);
         if (cart.getItems().isEmpty()) {
             throw new IllegalStateException("Нельзя оформить заказ для пустой корзины");
@@ -37,16 +39,29 @@ public class OrderService {
         Order order = new Order();
         order.setUsername(username);
         order.setTotalPrice(cart.getTotalPrice());
+        order.setOrderDetails(new OrderDetails(order, getAddress(contactInfo), contactInfo.getPhone(), contactInfo.getAdditionalInformation()));
 
         List<OrderItem> orderItems = cart.getItems()
                 .stream().map(i -> new OrderItem(order,
-                productService.findById(i.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Продукт с id: " + i.getProductId() + " не найден")),
-                i.getPricePerProduct(),
-                i.getPrice(),
-                i.getQuantity())).collect(Collectors.toList());
+                        productService.findById(i.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Продукт с id: " + i.getProductId() + " не найден")),
+                        i.getPricePerProduct(),
+                        i.getPrice(),
+                        i.getQuantity())).collect(Collectors.toList());
 
         order.setItems(orderItems);
         orderRepository.save(order);
         cartServiceIntegration.clearCart(username);
+    }
+
+    private String getAddress(ContactInfo contactInfo) {
+        return contactInfo.getZip() +
+                ", " +
+                contactInfo.getCountry() +
+                ", " +
+                contactInfo.getRegion() +
+                ", " +
+                contactInfo.getCity() +
+                ", " +
+                contactInfo.getAddress();
     }
 }

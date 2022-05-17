@@ -1,47 +1,94 @@
 <div>
     <p></p>
-    <h3>Корзина</h3>
+    <h3>1. Список товаров для заказа</h3>
     <p></p>
-    <button class="btn btn-primary" ng-click="clearCart()">Очистить корзину</button>
-    <p></p>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Удалить</th>
-            <th>ID</th>
-            <th>Название</th>
-            <th>Цена за шт.</th>
-            <th>Количество</th>
-            <th>Стоимость</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="p in cart.items">
-            <td>
-                <button class="btn btn-danger btn-sm" ng-click="deleteProductFromCart(p.productId)">╳</button>
-            </td>
-            <td>{{p.productId}}</td>
-            <td>{{p.productTitle}}</td>
-            <td>{{p.pricePerProduct}}</td>
-            <td>
-                <button class="btn btn-primary btn-sm" ng-click="removeItemFromCart(p.productId)">-</button>
-                {{p.quantity}}
-                <button class="btn btn-primary btn-sm" ng-click="addProductToCart(p.productId)">+</button>
-            </td>
-            <td>{{p.price}}</td>
-        </tr>
-        <tr>
-            <td colspan="5" style="text-align: right">Общая стоимость</td>
-            <td style="font-weight: bold">{{cart.totalPrice}}</td>
-        </tr>
-        </tbody>
-    </table>
-    <p></p>
-    <p></p>
-    <button class="btn btn-secondary" ng-click="guestCreateOrder()" ng-show="!isUserLoggedIn()">Оформить заказ</button>
-    <button class="btn btn-primary" ng-click="createOrder()" ng-show="isUserLoggedIn()">Оформить заказ</button>
     <div ng-show="cart.items.length == 0">
         <p>Ваша корзина пуста</p>
     </div>
+    <div ng-show="cart.items.length != 0">
+        <button class="btn btn-primary" ng-click="clearCart()">Очистить корзину</button>
+        <p></p>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Удалить</th>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Цена за шт.</th>
+                <th>Количество</th>
+                <th>Стоимость</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="p in cart.items">
+                <td>
+                    <button class="btn btn-danger btn-sm" ng-click="deleteProductFromCart(p.productId)">╳</button>
+                </td>
+                <td>{{p.productId}}</td>
+                <td>{{p.productTitle}}</td>
+                <td>{{p.pricePerProduct}}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" ng-click="removeItemFromCart(p.productId)">-</button>
+                    {{p.quantity}}
+                    <button class="btn btn-primary btn-sm" ng-click="addProductToCart(p.productId)">+</button>
+                </td>
+                <td>{{p.price}}</td>
+            </tr>
+            <tr>
+                <td colspan="5" style="text-align: right">Общая стоимость</td>
+                <td style="font-weight: bold">{{cart.totalPrice}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p></p>
+    <form>
+        <h3>2. Адресс доставки</h3>
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label for="inputCountry">Страна</label>
+                <input ng-model="address.country" type="text" class="form-control" id="inputCountry"
+                       placeholder="Россия" required>
+            </div>
+            <div class="form-group col-md-5">
+                <label for="inputRegion">Край/область</label>
+                <input ng-model="address.region" type="text" class="form-control" id="inputRegion"
+                       placeholder="Хабаровский край">
+            </div>
+
+            <div class="form-group col-md-2">
+                <label for="inputZip">Индекс</label>
+                <input ng-model="address.zip" type="text" class="form-control" id="inputZip" placeholder="680030"
+                       required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="inputCity">Город</label>
+                <input ng-model="address.city" type="text" class="form-control" id="inputCity" placeholder="Хабаровск"
+                       required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputAddress">Улица, дом, квартира</label>
+                <input ng-model="address.address" type="text" class="form-control" id="inputAddress"
+                       placeholder="ул. Ленина, дом 30, кв. 15"
+                       required>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="inputPhone">Номер телефона</label>
+                <input ng-model="address.phone" type="number" class="form-control" id="inputPhone"
+                       placeholder="88005553535" required/>
+            </div>
+        </div>
+        <div class="form-group mb-12">
+            <label class="form-label" for="inputAddInfo">Дополнительная информация</label>
+            <textarea ng-model="address.additionalInformation" class="form-control" id="inputAddInfo"
+                      rows="4"></textarea>
+        </div>
+        <p></p>
+        <button class="btn btn-secondary" ng-click="guestCreateOrder()" ng-show="!isUserLoggedIn()">Оформить заказ
+        </button>
+        <button class="btn btn-primary" ng-click="createOrder()" ng-show="isUserLoggedIn()">Оформить заказ</button>
+    </form>
     <p></p>
 </div>

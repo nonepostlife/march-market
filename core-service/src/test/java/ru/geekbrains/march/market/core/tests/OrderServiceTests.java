@@ -79,7 +79,7 @@ public class OrderServiceTests {
                 .findById(2L);
 
         String username = "bob";
-        orderService.createNewOrder(username);
+        orderService.createNewOrder(username, null);
         Mockito.verify(orderRepository, Mockito.times(1)).save(ArgumentMatchers.any());
     }
 }

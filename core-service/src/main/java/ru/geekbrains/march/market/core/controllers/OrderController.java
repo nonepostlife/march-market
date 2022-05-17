@@ -3,6 +3,7 @@ package ru.geekbrains.march.market.core.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.march.market.api.ContactInfo;
 import ru.geekbrains.march.market.api.OrderDto;
 import ru.geekbrains.march.market.core.services.OrderService;
 
@@ -16,8 +17,8 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createNewOrder(@RequestHeader String username) {
-        orderService.createNewOrder(username);
+    public void createNewOrder(@RequestHeader String username, @RequestBody ContactInfo contactInfo) {
+        orderService.createNewOrder(username, contactInfo);
     }
 
     @GetMapping

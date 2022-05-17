@@ -4,6 +4,17 @@ public class RegisterUserDto {
     private String username;
     private String password;
     private String confirmPassword;
+    private String email;
+
+    public RegisterUserDto() {
+    }
+
+    public RegisterUserDto(String username, String password, String confirmPassword, String email) {
+        this.username = username;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+        this.email = email;
+    }
 
     public String getUsername() {
         return username;
@@ -27,6 +38,24 @@ public class RegisterUserDto {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "RegisterUserDto{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 
     // TODO возможно расширение DTO

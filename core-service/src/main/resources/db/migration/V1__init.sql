@@ -45,3 +45,14 @@ create table orders_items
     updated_at              timestamp default current_timestamp,
     primary key (id, order_id)
 );
+
+create table orders_details
+(
+    id              bigserial primary key,
+    order_id        bigint not null references orders (id),
+    address         varchar(255),
+    phone           varchar(15),
+    add_info        varchar(255),
+    created_at      timestamp default current_timestamp,
+    updated_at      timestamp default current_timestamp
+);

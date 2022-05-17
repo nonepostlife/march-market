@@ -4,7 +4,11 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
     <script src="js/jquery-3.6.0.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/angular.min.js"></script>
@@ -30,22 +34,10 @@
                 <li class="nav-item" ng-show="isUserLoggedIn()">
                     <a class="nav-link" href="#!/orders">Мои заказы</a>
                 </li>
-                <li class="nav-item" ng-show="!isUserLoggedIn()">
-                    <form class="align-middle" ng-submit="tryToAuth()">
-                        <div class="input-group input-group-sm" style="padding: 4px;">
-                            <input id="navLoginField" class="form-control" ng-model="user.username" type="text"
-                                   aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
-
-                            <input id="navPasswordField" class="form-control" ng-model="user.password" type="password"
-                                   aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
-
-                            <button id="navLoginSubmit" class="btn btn-outline-warning btn-sm"
-                                    style="margin-left: 10px;" type="submit">Войти
-                            </button>
-                        </div>
-                    </form>
+                <li class="nav-item">
+                    <a class="nav-link justify-content-end" ng-show="!isUserLoggedIn()" href="#!/auth">Войти / Зарегистрироваться</a>
                 </li>
-                <li class="nav-item" ng-show="isUserLoggedIn()" style="padding: 4px;">
+                <li class="nav-item justify-content-end" ng-show="isUserLoggedIn()" style="padding: 4px;">
                     <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Выйти</button>
                 </li>
             </ul>
@@ -59,6 +51,8 @@
     <script src="cart/cart.js"></script>
     <script src="orders/orders.js"></script>
     <script src="welcome/welcome.js"></script>
+    <script src="auth/auth.js"></script>
+    <script src="register/register.js"></script>
 </div>
 </body>
 </html>
