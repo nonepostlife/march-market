@@ -1,3 +1,8 @@
 .pagination {
     display: flex;
+    align-items: end;
+}
+
+.prod {
+    min-height: 400px;
 }

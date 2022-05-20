@@ -2,45 +2,49 @@
     <p></p>
     <h3>Список товаров</h3>
     <p></p>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th style="width: 30%">Название</th>
-            <th style="width: 30%">Категория</th>
-            <th>Цена</th>
-<!--            <th>Удалить</th>-->
-            <th>Добавить в корзину</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="p in products">
-            <td>{{p.id}}</td>
-            <td>{{p.title}}</td>
-            <td>{{p.categoryTitle}}</td>
-            <td>{{p.price}}</td>
-<!--            <td>-->
-<!--                <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>-->
-<!--            </td>-->
-            <td>
-                <button class="btn btn-primary" ng-click="addProductToCart(p.id)">Добавить в корзину</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="prod">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th style="width: 30%">Название</th>
+                <th style="width: 30%">Категория</th>
+                <th>Цена</th>
+                <!--            <th>Удалить</th>-->
+                <th>Добавить в корзину</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="p in products">
+                <td>{{p.id}}</td>
+                <td>{{p.title}}</td>
+                <td>{{p.categoryTitle}}</td>
+                <td>{{p.price}}</td>
+                <!--            <td>-->
+                <!--                <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>-->
+                <!--            </td>-->
+                <td>
+                    <button class="btn btn-primary" ng-click="addProductToCart(p.id)">Добавить в корзину</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
     <p></p>
-    <nav aria-label="navigation">
-        <ul class="pagination justify-content-center" ng-show="totalPages != 1">
-            <li id="prev" class="page-item">
-                <a class="page-link" ng-click="loadProducts(currentPage - 1)">Previous</a>
-            </li>
-            <li id="curr" class="page-item" ng-repeat="page in pageNumbers">
-                <a class="page-link" ng-click="loadProducts(page)">{{page + 1}}</a>
-            </li>
-            <li id="next" class="page-item">
-                <a class="page-link" ng-click="loadProducts(currentPage + 1)">Next</a>
-            </li>
-        </ul>
-    </nav>
+    <div>
+        <nav aria-label="navigation">
+            <ul class="pagination justify-content-center" ng-show="totalPages != 1">
+                <li id="prev" class="page-item">
+                    <a class="page-link" ng-click="loadProducts(currentPage - 1)">Previous</a>
+                </li>
+                <li id="curr" class="page-item" ng-repeat="page in pageNumbers">
+                    <a class="page-link" ng-click="loadProducts(page)">{{page + 1}}</a>
+                </li>
+                <li id="next" class="page-item">
+                    <a class="page-link" ng-click="loadProducts(currentPage + 1)">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
     <p></p>
 </div>
