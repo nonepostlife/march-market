@@ -1,6 +1,8 @@
 package ru.geekbrains.march.market.auth.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,10 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.march.market.api.RegisterUserDto;
 import ru.geekbrains.march.market.auth.entities.Role;
 import ru.geekbrains.march.market.auth.entities.User;
+import ru.geekbrains.march.market.auth.exceptions.AppError;
+import ru.geekbrains.march.market.auth.exceptions.RegistrationException;
 import ru.geekbrains.march.market.auth.exceptions.ResourceNotFoundException;
 import ru.geekbrains.march.market.auth.repositories.UserRepository;
 
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +50,22 @@ public class UserService implements UserDetailsService {
     }
 
     public void registerNewUser(RegisterUserDto registerUserDto) {
+        if (!registerUserDto.getPassword().equals(registerUserDto.getConfirmPassword())) {
+            throw new RegistrationException("Указанные пароли не совпадают");
+            //return new ResponseEntity<>(new AppError("CHECK_PASSWORD_MATCH", "Указанные пароли не совпадают"), HttpStatus.BAD_REQUEST);
+        }
+        if (findByUsername(registerUserDto.getUsername()).isPresent()) {
+            throw new RegistrationException("Пользователь '" + registerUserDto.getUsername() + "' уже существует");
+            //return new ResponseEntity<>(new AppError("CHECK_USERNAME_USED", "Пользователь '" + registerUserDto.getUsername() + "' уже существует"), HttpStatus.BAD_REQUEST);
+        }
+        if (findByEmail(registerUserDto.getEmail()).isPresent()) {
+            throw new RegistrationException("Пользователь с указанной электронной почтой '" + registerUserDto.getEmail() + "' уже существует");
+            //return new ResponseEntity<>(new AppError("CHECK_EMAIL_USED", "Пользователь с указанной электронной почтой '" + registerUserDto.getEmail() + "' уже существует"), HttpStatus.BAD_REQUEST);
+        }
+        if (!emailValidate(registerUserDto.getEmail())) {
+            throw new RegistrationException("Указанная электронная почта '" + registerUserDto.getEmail() + "' имеет неверный формат");
+        }
+
         String bcryptCachedPassword = passwordEncoder.encode(registerUserDto.getPassword());
         User user = new User();
         user.setUsername(registerUserDto.getUsername());
@@ -52,5 +73,12 @@ public class UserService implements UserDetailsService {
         user.setEmail(registerUserDto.getEmail());
         user.setRoles(List.of(roleService.getUserRole()));
         userRepository.save(user);
+    }
+
+    private boolean emailValidate(String emailAddress) {
+        return Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
+                .matcher(emailAddress)
+                .matches();
     }
 }
