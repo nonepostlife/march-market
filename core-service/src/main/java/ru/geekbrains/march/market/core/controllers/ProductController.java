@@ -9,6 +9,8 @@ import ru.geekbrains.march.market.core.converters.ProductConverter;
 import ru.geekbrains.march.market.core.exceptions.ResourceNotFoundException;
 import ru.geekbrains.march.market.core.services.ProductService;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
@@ -17,11 +19,18 @@ public class ProductController {
     private final ProductConverter productConverter;
 
     @GetMapping
-    public Page<ProductDto> getAllProducts(@RequestParam(defaultValue = "0") Integer page,
-                                           @RequestParam(defaultValue = "5") Integer pageSize,
-                                           @RequestParam(defaultValue = "id") String sortBy) {
-        Page<ProductDto> productPage = productService.findAll(page, pageSize, sortBy);
-        return productPage;
+    public Page<ProductDto> getAllProducts(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "title") String sortBy,
+            @RequestParam(name = "title_part", required = false) String titlePart,
+            @RequestParam(name = "min_price", required = false) Integer minPrice,
+            @RequestParam(name = "max_price", required = false) Integer maxPrice
+    ) {
+        if (page < 1) {
+            page = 1;
+        }
+        return productService.findAll(page - 1, pageSize, sortBy, titlePart, minPrice, maxPrice);
     }
 
     @GetMapping("/{id}")

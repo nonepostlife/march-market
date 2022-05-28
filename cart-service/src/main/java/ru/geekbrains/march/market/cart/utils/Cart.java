@@ -40,12 +40,13 @@ public class Cart {
         items.forEach(i -> totalPrice = totalPrice.add(i.getPrice()));
     }
 
-    public void delete(ProductDto p) {
-        items.removeIf(item -> item.getProductId().equals(p.getId()));
-        recalculate();
+    public void deleteProduct(ProductDto p) {
+        if (items.removeIf(item -> item.getProductId().equals(p.getId()))) {
+            recalculate();
+        }
     }
 
-    public void remove(ProductDto p) {
+    public void removeItemProduct(ProductDto p) {
         for (CartItem item : items) {
             if (item.getProductId().equals(p.getId())) {
                 if (item.getQuantity() > 1) {
