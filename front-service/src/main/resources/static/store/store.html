@@ -2,49 +2,104 @@
     <p></p>
     <h3>Список товаров</h3>
     <p></p>
-    <div class="prod">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th style="width: 30%">Название</th>
-                <th style="width: 30%">Категория</th>
-                <th>Цена</th>
-                <!--            <th>Удалить</th>-->
-                <th>Добавить в корзину</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="p in products">
-                <td>{{p.id}}</td>
-                <td>{{p.title}}</td>
-                <td>{{p.categoryTitle}}</td>
-                <td>{{p.price}}</td>
-                <!--            <td>-->
-                <!--                <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>-->
-                <!--            </td>-->
-                <td>
-                    <button class="btn btn-primary" ng-click="addProductToCart(p.id)">Добавить в корзину</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
     <p></p>
-    <div>
-        <nav aria-label="navigation">
-            <ul class="pagination justify-content-center" ng-show="totalPages != 1">
-                <li id="prev" class="page-item">
-                    <a class="page-link" ng-click="loadProducts(currentPage - 1)">Previous</a>
-                </li>
-                <li id="curr" class="page-item" ng-repeat="page in pageNumbers">
-                    <a class="page-link" ng-click="loadProducts(page)">{{page + 1}}</a>
-                </li>
-                <li id="next" class="page-item">
-                    <a class="page-link" ng-click="loadProducts(currentPage + 1)">Next</a>
-                </li>
-            </ul>
-        </nav>
+    <div class="row">
+        <aside class="col-sm-3">
+            <div class="card">
+                <article class="card-group-item">
+                    <header class="card-header">
+                        <h6 class="title">Цена товара</h6>
+                    </header>
+                    <div class="filter-content">
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Мин.</label>
+                                    <input type="number" class="form-control" id="inputEmail4" placeholder="0 ₽"
+                                           ng-model="filter.min_price">
+                                </div>
+                                <div class="form-group col-md-6 text-right">
+                                    <label>Макс.</label>
+                                    <input type="number" class="form-control" placeholder="∞ ₽"
+                                           ng-model="filter.max_price">
+                                </div>
+                            </div>
+                        </div> <!-- card-body.// -->
+                    </div>
+                </article> <!-- card-group-item.// -->
+                <article class="card-group-item">
+                    <header class="card-header">
+                        <h6 class="title">Название товара</h6>
+                    </header>
+                    <div class="filter-content">
+                        <div class="card-body">
+                            <div class="form-row">
+                                <input type="text" class="form-control" id="filterTitle"
+                                       placeholder="Введите название товара..." ng-model="filter.title_part">
+                            </div>
+                        </div> <!-- card-body.// -->
+                    </div>
+                </article> <!-- card-group-item.// -->
+                <article class="card-group-item">
+                    <div class="filter-content">
+                        <div class="card-body">
+                            <div class="form-row">
+                                <button style="width: 100%;" class="btn btn-primary" ng-click="loadProducts(1)">Показать
+                                </button>
+                            </div>
+                        </div> <!-- card-body.// -->
+                    </div>
+                </article> <!-- card-group-item.// -->
+            </div> <!-- card.// -->
+        </aside> <!-- col.// -->
+
+        <aside class="col-sm-9">
+            <div class="prod">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th style="width: 30%">Название</th>
+                        <th style="width: 30%">Категория</th>
+                        <th>Цена</th>
+                        <!--            <th>Удалить</th>-->
+                        <th>Добавить в корзину</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="p in products">
+                        <td>{{p.id}}</td>
+                        <td>{{p.title}}</td>
+                        <td>{{p.categoryTitle}}</td>
+                        <td>{{p.price}}</td>
+                        <!--            <td>-->
+                        <!--                <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>-->
+                        <!--            </td>-->
+                        <td>
+                            <button class="btn btn-primary" ng-click="addProductToCart(p.id)">Добавить в корзину
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p></p>
+            <div>
+                <nav aria-label="navigation">
+                    <ul class="pagination justify-content-center" ng-show="totalPages != 1">
+                        <li id="prev" class="page-item">
+                            <a class="page-link" ng-click="loadProducts(currentPage - 1)">Previous</a>
+                        </li>
+                        <li id="curr" class="page-item" ng-repeat="page in pageNumbers">
+                            <a class="page-link" ng-click="loadProducts(page)">{{page}}</a>
+                        </li>
+                        <li id="next" class="page-item">
+                            <a class="page-link" ng-click="loadProducts(currentPage + 1)">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside> <!-- col.// -->
+        <p></p>
     </div>
-    <p></p>
 </div>

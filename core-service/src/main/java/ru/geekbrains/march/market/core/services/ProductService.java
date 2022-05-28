@@ -3,18 +3,18 @@ package ru.geekbrains.march.market.core.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.march.market.api.ProductDto;
 import ru.geekbrains.march.market.core.converters.ProductConverter;
 import ru.geekbrains.march.market.core.exceptions.ResourceNotFoundException;
 import ru.geekbrains.march.market.core.entities.Product;
 import ru.geekbrains.march.market.core.repositories.ProductRepository;
+import ru.geekbrains.march.market.core.repositories.specifications.ProductsSpecifications;
 
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,10 +23,18 @@ public class ProductService {
     private final CategoryService categoryService;
     private final ProductConverter productConverter;
 
-    public Page<ProductDto> findAll(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-        Page<ProductDto> pagedResult = productRepository.findAll(paging).map(productConverter::entityToDto);
-        return pagedResult;
+    public Page<ProductDto> findAll(Integer pageNo, Integer pageSize, String sortBy, String titlePart, Integer minPrice, Integer maxPrice) {
+        Specification<Product> spec = Specification.where(null);
+        if (titlePart != null) {
+            spec = spec.and(ProductsSpecifications.titleLike(titlePart));
+        }
+        if (minPrice != null) {
+            spec = spec.and(ProductsSpecifications.priceGreaterOrEqualsThan(BigDecimal.valueOf(minPrice)));
+        }
+        if (maxPrice != null) {
+            spec = spec.and(ProductsSpecifications.priceLessThanOrEqualsThan(BigDecimal.valueOf(maxPrice)));
+        }
+        return productRepository.findAll(spec, PageRequest.of(pageNo, pageSize, Sort.by(sortBy))).map(productConverter::entityToDto);
     }
 
     public void deleteById(Long id) {
