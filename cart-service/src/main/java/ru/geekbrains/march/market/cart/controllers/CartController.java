@@ -52,7 +52,7 @@ public class CartController {
     }
 
     @GetMapping("/{guestCartId}/merge")
-    public void mergeGuestCartWithUserCart(@RequestHeader(required = false) String username, @PathVariable String guestCartId) {
+    public void mergeGuestCartWithUserCart(@RequestHeader String username, @PathVariable String guestCartId) {
         cartService.mergeCart(username, guestCartId);
         cartService.clearCart(guestCartId);
     }

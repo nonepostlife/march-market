@@ -55,4 +55,18 @@ public class ProductControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
+
+    @Test
+    public void getProductTest() throws Exception {
+        mvc
+                .perform(
+                        get("/api/v1/products/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isNotEmpty())
+                .andExpect(jsonPath("$.title", is("Молоко")));
+    }
 }

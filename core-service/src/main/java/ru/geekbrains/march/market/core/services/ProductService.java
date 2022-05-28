@@ -1,6 +1,10 @@
 package ru.geekbrains.march.market.core.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.march.market.api.ProductDto;
 import ru.geekbrains.march.market.core.converters.ProductConverter;
@@ -19,9 +23,10 @@ public class ProductService {
     private final CategoryService categoryService;
     private final ProductConverter productConverter;
 
-    public List<ProductDto> findAll() {
-        List<Product> productList = productRepository.findAll();
-        return productList.stream().map(productConverter::entityToDto).collect(Collectors.toList());
+    public Page<ProductDto> findAll(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<ProductDto> pagedResult = productRepository.findAll(paging).map(productConverter::entityToDto);
+        return pagedResult;
     }
 
     public void deleteById(Long id) {

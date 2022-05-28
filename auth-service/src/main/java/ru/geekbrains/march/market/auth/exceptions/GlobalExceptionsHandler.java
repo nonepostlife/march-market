@@ -7,8 +7,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionsHandler {
+
     @ExceptionHandler
     public ResponseEntity<AppError> handleResourceNotFoundException(ResourceNotFoundException e) {
         return new ResponseEntity<>(new AppError("RESOURCE_NOT_FOUND", e.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<AppError> handleRegistrationException(RegistrationException e) {
+        return new ResponseEntity<>(new AppError("USER_REGISTRATION_ERROR", e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }
