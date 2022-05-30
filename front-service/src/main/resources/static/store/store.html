@@ -24,9 +24,9 @@
                                            ng-model="filter.max_price">
                                 </div>
                             </div>
-                        </div> <!-- card-body.// -->
+                        </div>
                     </div>
-                </article> <!-- card-group-item.// -->
+                </article>
                 <article class="card-group-item">
                     <header class="card-header">
                         <h6 class="title">Название товара</h6>
@@ -37,9 +37,9 @@
                                 <input type="text" class="form-control" id="filterTitle"
                                        placeholder="Введите название товара..." ng-model="filter.title_part">
                             </div>
-                        </div> <!-- card-body.// -->
+                        </div>
                     </div>
-                </article> <!-- card-group-item.// -->
+                </article>
                 <article class="card-group-item">
                     <div class="filter-content">
                         <div class="card-body">
@@ -47,11 +47,15 @@
                                 <button style="width: 100%;" class="btn btn-primary" ng-click="loadProducts(1)">Показать
                                 </button>
                             </div>
-                        </div> <!-- card-body.// -->
+                            <div class="form-row">
+                                <button style="width: 100%; margin-top: 10px;" class="btn btn-outline-secondary" ng-click="resetFilters()">Сбросить фильтр
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </article> <!-- card-group-item.// -->
-            </div> <!-- card.// -->
-        </aside> <!-- col.// -->
+                </article>
+            </div>
+        </aside>
 
         <aside class="col-sm-9">
             <div class="prod">
@@ -85,21 +89,24 @@
             </div>
             <p></p>
             <div>
-                <nav aria-label="navigation">
-                    <ul class="pagination justify-content-center" ng-show="totalPages != 1">
+                <nav aria-label="navigation" ng-show="totalPages != 1">
+                    <ul class="pagination justify-content-center">
                         <li id="prev" class="page-item">
                             <a class="page-link" ng-click="loadProducts(currentPage - 1)">Previous</a>
                         </li>
-                        <li id="curr" class="page-item" ng-repeat="page in pageNumbers">
+                        <li id="{{page}}" class="page-item digit-page-item" ng-repeat="page in pageNumbers">
                             <a class="page-link" ng-click="loadProducts(page)">{{page}}</a>
                         </li>
                         <li id="next" class="page-item">
                             <a class="page-link" ng-click="loadProducts(currentPage + 1)">Next</a>
                         </li>
                     </ul>
+                    <p class="pagination justify-content-center">Показано с {{(currentPage - 1) * pageSize + 1}} по
+                        {{currentPage * pageSize - (pageSize - numberOfElements)}} товаров из
+                        {{totalElements}} (страница {{currentPage}} из {{totalPages}})</p>
                 </nav>
             </div>
-        </aside> <!-- col.// -->
+        </aside>
         <p></p>
     </div>
 </div>
