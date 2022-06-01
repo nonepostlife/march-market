@@ -1,12 +1,13 @@
 package ru.geekbrains.march.market.core.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.march.market.api.PageDto;
 import ru.geekbrains.march.market.api.ProductDto;
+import ru.geekbrains.march.market.core.converters.PageConverter;
 import ru.geekbrains.march.market.core.converters.ProductConverter;
 import ru.geekbrains.march.market.core.exceptions.ResourceNotFoundException;
 import ru.geekbrains.march.market.core.entities.Product;
@@ -22,8 +23,9 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
     private final ProductConverter productConverter;
+    private final PageConverter pageConverter;
 
-    public Page<ProductDto> findAll(Integer pageNo, Integer pageSize, String sortBy, String titlePart, Integer minPrice, Integer maxPrice) {
+    public PageDto<ProductDto> findAll(Integer pageNo, Integer pageSize, String sortBy, String titlePart, Integer minPrice, Integer maxPrice) {
         Specification<Product> spec = Specification.where(null);
         if (titlePart != null) {
             spec = spec.and(ProductsSpecifications.titleLike(titlePart));
@@ -34,7 +36,7 @@ public class ProductService {
         if (maxPrice != null) {
             spec = spec.and(ProductsSpecifications.priceLessThanOrEqualsThan(BigDecimal.valueOf(maxPrice)));
         }
-        return productRepository.findAll(spec, PageRequest.of(pageNo, pageSize, Sort.by(sortBy))).map(productConverter::entityToDto);
+        return pageConverter.entityToDto(productRepository.findAll(spec, PageRequest.of(pageNo, pageSize, Sort.by(sortBy))).map(productConverter::entityToDto));
     }
 
     public void deleteById(Long id) {

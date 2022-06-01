@@ -10,11 +10,13 @@ angular.module('market').controller('storeController', function ($rootScope, $sc
                 max_price: $scope.filter ? $scope.filter.max_price : null
             }
         }).then(function (response) {
-            console.log(response.data)
-            $scope.products = response.data.content;
-            $scope.currentPage = response.data.number + 1;
-            $scope.totalPages = response.data.totalPages
-            $scope.pageNumbers = range(1, $scope.totalPages)
+            $scope.products = response.data.items;
+            $scope.currentPage = response.data.page + 1;
+            $scope.totalPages = response.data.totalPages;
+            $scope.pageSize = response.data.pageSize;
+            $scope.numberOfElements = response.data.numberOfElements;
+            $scope.totalElements = response.data.totalElements;
+            $scope.pageNumbers = range(1, $scope.totalPages);
         });
         if (page === 1)
             document.getElementById("prev").classList.add("disabled")
@@ -24,12 +26,24 @@ angular.module('market').controller('storeController', function ($rootScope, $sc
             document.getElementById("next").classList.add("disabled")
         else
             document.getElementById("next").classList.remove("disabled")
+
+        $http({
+            url: 'http://localhost:5555/core/api/v1/categories',
+            method: 'GET'
+        }).then(function (response) {
+            console.log(response.data)
+        });
     };
 
     $scope.addProductToCart = function (id) {
         $http.get('http://localhost:5555/cart/api/v1/cart/' + $localStorage.marchMarketGuestCartId + '/add/' + id)
             .then(function (response) {
             });
+    }
+
+    $scope.resetFilters = function () {
+        $scope.filter = null;
+        $scope.loadProducts();
     }
 
     $scope.loadProducts();

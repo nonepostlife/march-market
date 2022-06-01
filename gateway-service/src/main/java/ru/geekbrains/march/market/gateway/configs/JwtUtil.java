@@ -1,4 +1,4 @@
-package ru.geekbrains.march.market.gateway;
+package ru.geekbrains.march.market.gateway.configs;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
