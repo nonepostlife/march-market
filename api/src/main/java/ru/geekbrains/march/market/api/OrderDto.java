@@ -1,5 +1,7 @@
 package ru.geekbrains.march.market.api;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,11 +10,22 @@ import java.time.format.FormatStyle;
 import java.util.List;
 
 public class OrderDto {
+    @Schema(description = "ID заказа", required = true, example = "1")
     private Long id;
+
+    @Schema(description = "Имя пользователя", required = true, example = "Bob")
     private String username;
+
+    @Schema(description = "Суммарная стоимость продуктов в заказе", required = true, example = "21412.20")
     private BigDecimal totalPrice;
+
+    @Schema(description = "Список товаров в заказе", required = true, implementation = OrderItemDto.class)
     private List<OrderItemDto> items;
+
+    @Schema(description = "Адрес доставки заказа", required = true, example = "680020, Россия, Хабаровский край, Хабаровск, ул Ленина, Дом 1, Квартира 1")
     private String deliverAddress;
+
+    @Schema(description = "Дата создания заказа", required = true, example = "3 июн. 2022 г., 15:39:16")
     private String createdAt;
 
     public OrderDto() {

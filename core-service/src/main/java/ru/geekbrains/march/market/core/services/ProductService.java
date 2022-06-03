@@ -1,6 +1,7 @@
 package ru.geekbrains.march.market.core.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -40,7 +41,11 @@ public class ProductService {
     }
 
     public void deleteById(Long id) {
-        productRepository.deleteById(id);
+        try {
+            productRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Продукт с id: '" + id + "' не найден");
+        }
     }
 
     public void createNewProduct(ProductDto productDto) {

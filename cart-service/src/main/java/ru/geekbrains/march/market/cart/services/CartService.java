@@ -3,14 +3,13 @@ package ru.geekbrains.march.market.cart.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import ru.geekbrains.march.market.api.ProductDto;
+import ru.geekbrains.march.market.cart.execptions.ResourceNotFoundException;
 import ru.geekbrains.march.market.cart.integrations.ProductServiceIntegration;
 import ru.geekbrains.march.market.cart.utils.Cart;
 import ru.geekbrains.march.market.cart.utils.CartItem;
 
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Consumer;
 
 @Service
@@ -33,9 +32,13 @@ public class CartService {
 
     public void addToCart(String cartId, Long productId, int quantity) {
         execute(cartId, cart -> {
-            ProductDto p = productServiceIntegration.findById(productId);
-            for (int i = 0; i < quantity; i++) {
-                cart.add(p);
+            try {
+                ProductDto p = productServiceIntegration.findById(productId);
+                for (int i = 0; i < quantity; i++) {
+                    cart.add(p);
+                }
+            } catch (WebClientResponseException e) {
+                throw new ResourceNotFoundException(String.format("Продукт с id '%s' не найден", productId));
             }
         });
     }
@@ -46,15 +49,23 @@ public class CartService {
 
     public void deleteProductFromCart(String cartId, Long productId) {
         execute(cartId, cart -> {
-            ProductDto p = productServiceIntegration.findById(productId);
-            cart.deleteProduct(p);
+            try {
+                ProductDto p = productServiceIntegration.findById(productId);
+                cart.deleteProduct(p);
+            } catch (WebClientResponseException e) {
+                throw new ResourceNotFoundException(String.format("Продукт с id '%s' не найден", productId));
+            }
         });
     }
 
     public void removeItemFromCart(String cartId, Long productId) {
         execute(cartId, cart -> {
-            ProductDto p = productServiceIntegration.findById(productId);
-            cart.removeItemProduct(p);
+            try {
+                ProductDto p = productServiceIntegration.findById(productId);
+                cart.removeItemProduct(p);
+            } catch (WebClientResponseException e) {
+                throw new ResourceNotFoundException(String.format("Продукт с id '%s' не найден", productId));
+            }
         });
     }
 

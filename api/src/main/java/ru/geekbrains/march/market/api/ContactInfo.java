@@ -1,12 +1,27 @@
 package ru.geekbrains.march.market.api;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class ContactInfo {
+    @Schema(description = "Страна", required = true, example = "Россия")
     private String country;
+
+    @Schema(description = "Регион", required = true, example = "Хабаровский край")
     private String region;
+
+    @Schema(description = "Индекс", required = true, example = "680020")
     private String zip;
+
+    @Schema(description = "Город", required = true, example = "Хабаровск")
     private String city;
+
+    @Schema(description = "Адрес доставки", required = true, example = "ул Ленина, Дом 1, Квартира 1")
     private String address;
+
+    @Schema(description = "Контактный номер телефона", required = true, example = "89099090909")
     private String phone;
+
+    @Schema(description = "Дополнительная информация по заказу", required = true, example = "Перед доставкой позвонить")
     private String additionalInformation;
 
     public ContactInfo() {

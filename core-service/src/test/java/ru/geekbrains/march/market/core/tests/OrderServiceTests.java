@@ -1,11 +1,15 @@
 package ru.geekbrains.march.market.core.tests;
 
+import org.apache.coyote.Request;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import ru.geekbrains.march.market.api.CartDto;
 import ru.geekbrains.march.market.api.CartItemDto;
@@ -40,8 +44,8 @@ public class OrderServiceTests {
     @Test
     public void getAllOrdersTest() {
         String username = "bob";
-        orderService.getAllOrders(username);
-        Mockito.verify(orderRepository, Mockito.times(1)).findAllByUsername(ArgumentMatchers.any());
+        orderService.getAllOrders(username, 0, 5, "id");
+        Mockito.verify(orderRepository, Mockito.times(1)).findAllByUsername(ArgumentMatchers.any(), ArgumentMatchers.any());
     }
 
     @Test
