@@ -2,10 +2,10 @@
     <p></p>
     <h3>Заказы</h3>
     <p></p>
-    <div ng-show="orders.length == 0">
+    <div ng-show="totalElements == 0">
         <p>У вас нет созданных заказов. <a href="#!/store">Отправиться за покупками!</a></p>
     </div>
-    <div ng-show="orders.length != 0">
+    <div ng-show="totalElements != 0">
         <div ng-repeat="o in orders">
             <h5>Заказ № {{o.id}}</h5>
             <h6>Общая стоимость: {{o.totalPrice}}</h6>
@@ -32,6 +32,25 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+        <p></p>
+        <div>
+            <nav aria-label="navigation" ng-show="totalPages != 1">
+                <ul class="pagination justify-content-center">
+                    <li id="prev" class="page-item">
+                        <a class="page-link" ng-click="loadOrders(currentPage - 1)">Previous</a>
+                    </li>
+                    <li id="{{page}}" class="page-item digit-page-item" ng-repeat="page in pageNumbers">
+                        <a class="page-link" ng-click="loadOrders(page)">{{page}}</a>
+                    </li>
+                    <li id="next" class="page-item">
+                        <a class="page-link" ng-click="loadOrders(currentPage + 1)">Next</a>
+                    </li>
+                </ul>
+                <p class="pagination justify-content-center">Показано с {{(currentPage - 1) * pageSize + 1}} по
+                    {{currentPage * pageSize - (pageSize - numberOfElements)}} товаров из
+                    {{totalElements}} (страница {{currentPage}} из {{totalPages}})</p>
+            </nav>
         </div>
     </div>
 </div>

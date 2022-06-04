@@ -1,7 +1,12 @@
 package ru.geekbrains.march.market.api;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class CategoryDto {
+    @Schema(description = "ID категории", required = true, example = "1")
     private Long id;
+
+    @Schema(description = "Название категории", required = true, example = "Food")
     private String title;
 
     public CategoryDto() {

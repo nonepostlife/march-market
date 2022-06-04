@@ -1,11 +1,16 @@
 package ru.geekbrains.march.market.core.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.march.market.api.ContactInfo;
 import ru.geekbrains.march.market.api.CartDto;
 import ru.geekbrains.march.market.api.OrderDto;
+import ru.geekbrains.march.market.api.PageDto;
 import ru.geekbrains.march.market.core.converters.OrderConverter;
+import ru.geekbrains.march.market.core.converters.PageConverter;
 import ru.geekbrains.march.market.core.entities.Order;
 import ru.geekbrains.march.market.core.entities.OrderDetails;
 import ru.geekbrains.march.market.core.entities.OrderItem;
@@ -23,11 +28,12 @@ public class OrderService {
     private final ProductService productService;
     private final OrderRepository orderRepository;
     private final OrderConverter orderConverter;
+    private final PageConverter pageConverter;
     private final CartServiceIntegration cartServiceIntegration;
 
-    public List<OrderDto> getAllOrders(String username) {
-        List<Order> orders = orderRepository.findAllByUsername(username);
-        return orders.stream().map(orderConverter::entityToDto).collect(Collectors.toList());
+    public PageDto<OrderDto> getAllOrders(String username, Integer pageNo, Integer pageSize, String sortBy) {
+        Page<Order> orders = orderRepository.findAllByUsername(username, PageRequest.of(pageNo, pageSize, Sort.by(sortBy)));
+        return pageConverter.entityToDto(orders.map(orderConverter::entityToDto));
     }
 
     @Transactional
