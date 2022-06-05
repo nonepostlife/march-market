@@ -7,13 +7,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.march.market.api.PageDto;
 import ru.geekbrains.march.market.api.ProductDto;
+import ru.geekbrains.march.market.core.converters.PageConverter;
 import ru.geekbrains.march.market.core.converters.ProductConverter;
+import ru.geekbrains.march.market.core.entities.Product;
 import ru.geekbrains.march.market.core.exceptions.AppError;
-import ru.geekbrains.march.market.core.exceptions.ResourceNotFoundException;
 import ru.geekbrains.march.market.core.services.ProductService;
 
 
@@ -24,6 +26,7 @@ import ru.geekbrains.march.market.core.services.ProductService;
 public class ProductController {
     private final ProductService productService;
     private final ProductConverter productConverter;
+    private final PageConverter pageConverter;
 
     @Operation(
             summary = "Запрос на получение списка продуктов",
@@ -50,7 +53,8 @@ public class ProductController {
         if (page < 1) {
             page = 1;
         }
-        return productService.findAll(page - 1, pageSize, sortBy, titlePart, minPrice, maxPrice);
+        Page<Product> products = productService.findAll(page - 1, pageSize, sortBy, titlePart, minPrice, maxPrice);
+        return pageConverter.entityToDto(products.map(productConverter::entityToDto));
     }
 
     @Operation(
@@ -68,7 +72,7 @@ public class ProductController {
     )
     @GetMapping("/{id}")
     public ProductDto getProductById(@PathVariable @Parameter(description = "Идентификатор продукта", required = true) Long id) {
-        return productConverter.entityToDto(productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Продукт с id: " + id + " не найден")));
+        return productConverter.entityToDto(productService.findById(id));
     }
 
     @Operation(
@@ -98,7 +102,7 @@ public class ProductController {
             }
     )
     @DeleteMapping("/{id}")
-    public void deleteProductById(@PathVariable @Parameter(description = "Идентификатор продукта", required = true)  Long id) {
+    public void deleteProductById(@PathVariable @Parameter(description = "Идентификатор продукта", required = true) Long id) {
         productService.deleteById(id);
     }
 }

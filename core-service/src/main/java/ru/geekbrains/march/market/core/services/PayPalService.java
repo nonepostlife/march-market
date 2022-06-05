@@ -4,7 +4,6 @@ import com.paypal.orders.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.geekbrains.march.market.core.exceptions.ResourceNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ public class PayPalService {
 
     @Transactional
     public OrderRequest createOrderRequest(Long orderId) {
-        ru.geekbrains.march.market.core.entities.Order order = orderService.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Заказ с id: " + orderId + " не найден"));
+        ru.geekbrains.march.market.core.entities.Order order = orderService.findById(orderId);
 
         OrderRequest orderRequest = new OrderRequest();
         orderRequest.checkoutPaymentIntent("CAPTURE");

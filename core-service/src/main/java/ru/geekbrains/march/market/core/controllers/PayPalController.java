@@ -14,13 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.march.market.api.StringResponse;
-import ru.geekbrains.march.market.core.exceptions.ResourceNotFoundException;
 import ru.geekbrains.march.market.core.services.OrderService;
 import ru.geekbrains.march.market.core.services.PayPalService;
 import ru.geekbrains.march.market.core.utils.OrderStatus;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/v1/paypal")
@@ -49,7 +47,7 @@ public class PayPalController {
         if ("COMPLETED".equals(payPalOrder.status())) {
             long orderId = Long.parseLong(payPalOrder.purchaseUnits().get(0).referenceId());
             orderService.orderChangeStatus(orderId, OrderStatus.ORDER_HAS_BEEN_PAID);
-            return new ResponseEntity<>(new StringResponse("Order has been paid!"), HttpStatus.valueOf(response.statusCode()));
+            return new ResponseEntity<>(new StringResponse("Заказ успешно оплачен!"), HttpStatus.valueOf(response.statusCode()));
         }
         return new ResponseEntity<>(payPalOrder, HttpStatus.valueOf(response.statusCode()));
     }

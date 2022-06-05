@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.march.market.api.ContactInfo;
@@ -14,8 +15,9 @@ import ru.geekbrains.march.market.api.OrderDto;
 import ru.geekbrains.march.market.api.PageDto;
 import ru.geekbrains.march.market.api.ProductDto;
 import ru.geekbrains.march.market.core.converters.OrderConverter;
+import ru.geekbrains.march.market.core.converters.PageConverter;
+import ru.geekbrains.march.market.core.entities.Order;
 import ru.geekbrains.march.market.core.exceptions.AppError;
-import ru.geekbrains.march.market.core.exceptions.ResourceNotFoundException;
 import ru.geekbrains.march.market.core.services.OrderService;
 import ru.geekbrains.march.market.core.utils.OrderStatus;
 
@@ -26,6 +28,7 @@ import ru.geekbrains.march.market.core.utils.OrderStatus;
 public class OrderController {
     private final OrderService orderService;
     private final OrderConverter orderConverter;
+    private final PageConverter pageConverter;
 
     @Operation(
             summary = "Запрос на создание нового заказа",
@@ -69,7 +72,8 @@ public class OrderController {
         if (page < 1) {
             page = 1;
         }
-        return orderService.getAllOrders(username, page - 1, pageSize, sortBy);
+        Page<Order> orders = orderService.getAllOrders(username, page - 1, pageSize, sortBy);
+        return pageConverter.entityToDto(orders.map(orderConverter::entityToDto));
     }
 
     @Operation(
@@ -87,7 +91,7 @@ public class OrderController {
     )
     @GetMapping("/{id}")
     public OrderDto getOrderById(@PathVariable @Parameter(description = "Идентификатор заказа", required = true) Long id) {
-        return orderConverter.entityToDto(orderService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Заказ с id: " + id + " не найден")));
+        return orderConverter.entityToDto(orderService.findById(id));
     }
 
     @Operation(

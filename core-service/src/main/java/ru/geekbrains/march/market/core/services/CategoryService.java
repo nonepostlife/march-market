@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.march.market.api.CategoryDto;
 import ru.geekbrains.march.market.core.converters.CategoryConverter;
 import ru.geekbrains.march.market.core.entities.Category;
+import ru.geekbrains.march.market.core.exceptions.ResourceNotFoundException;
 import ru.geekbrains.march.market.core.repositories.CategoryRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,8 +20,8 @@ public class CategoryService {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public Optional<Category> findByTitle(String title) {
-        return categoryRepository.findByTitle(title);
+    public Category findByTitle(String title) {
+        return categoryRepository.findByTitle(title).orElseThrow(() -> new ResourceNotFoundException("Категория с названием: '" + title + "' не найдена"));
     }
 
     public List<CategoryDto> findAll() {
