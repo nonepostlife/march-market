@@ -17,9 +17,11 @@ import ru.geekbrains.march.market.core.entities.OrderItem;
 import ru.geekbrains.march.market.core.exceptions.ResourceNotFoundException;
 import ru.geekbrains.march.market.core.integrations.CartServiceIntegration;
 import ru.geekbrains.march.market.core.repositories.OrderRepository;
+import ru.geekbrains.march.market.core.utils.OrderStatus;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +38,10 @@ public class OrderService {
         return pageConverter.entityToDto(orders.map(orderConverter::entityToDto));
     }
 
+    public Optional<Order> findById(Long id) {
+        return orderRepository.findById(id);
+    }
+
     @Transactional
     public void createNewOrder(String username, ContactInfo contactInfo) {
         CartDto cart = cartServiceIntegration.getCurrentUserCart(username);
@@ -44,6 +50,7 @@ public class OrderService {
         }
         Order order = new Order();
         order.setUsername(username);
+        order.setStatus(OrderStatus.ORDER_WAIT_TO_PAYMENT.name());
         order.setTotalPrice(cart.getTotalPrice());
         order.setOrderDetails(new OrderDetails(order, getAddress(contactInfo), contactInfo.getPhone(), contactInfo.getAdditionalInformation()));
 
@@ -57,6 +64,12 @@ public class OrderService {
         order.setItems(orderItems);
         orderRepository.save(order);
         cartServiceIntegration.clearCart(username);
+    }
+
+    public void orderChangeStatus(Long orderId, OrderStatus status) {
+        Order order = findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Заказ с id: " + orderId + " не найден"));
+        order.setStatus(status.name());
+        orderRepository.save(order);
     }
 
     private String getAddress(ContactInfo contactInfo) {

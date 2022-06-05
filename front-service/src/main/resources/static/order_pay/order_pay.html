@@ -1,0 +1,16 @@
+<div>
+    <p></p>
+    <div class="row">
+        <div class="col-md-9">
+            <h4>Заказ № {{order.id}}</h4>
+            <h6>Цена: {{order.totalPrice}}</h6>
+            <h6>Адрес: {{order.deliverAddress}}</h6>
+        </div>
+        <div ng-show="order.status == 'ORDER_WAIT_TO_PAYMENT'" class="col-md-3">
+            <h3>Оплатить</h3>
+            <p></p>
+            <div  id="paypal-buttons"></div>
+        </div>
+    </div>
+    <p></p>
+</div>
