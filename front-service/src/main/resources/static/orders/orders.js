@@ -1,4 +1,4 @@
-angular.module('market').controller('ordersController', function ($scope, $http) {
+angular.module('market').controller('ordersController', function ($scope, $http, $location) {
     $scope.loadOrders = function (page = 1) {
         $http({
             url: 'http://localhost:5555/core/api/v1/orders',
@@ -7,8 +7,6 @@ angular.module('market').controller('ordersController', function ($scope, $http)
                 page: page
             }
         }).then(function (response) {
-            console.log(response.data.items)
-
             $scope.orders = response.data.items;
             $scope.currentPage = response.data.page + 1;
             $scope.totalPages = response.data.totalPages;
@@ -16,7 +14,6 @@ angular.module('market').controller('ordersController', function ($scope, $http)
             $scope.numberOfElements = response.data.numberOfElements;
             $scope.totalElements = response.data.totalElements;
             $scope.pageNumbers = range(1, $scope.totalPages);
-            console.log($scope)
         });
         if (page === 1)
             document.getElementById("prev").classList.add("disabled")
@@ -27,6 +24,21 @@ angular.module('market').controller('ordersController', function ($scope, $http)
         else
             document.getElementById("next").classList.remove("disabled")
     };
+
+    $scope.goToPay = function (orderId) {
+        $location.path('/order_pay/' + orderId);
+    }
+
+    $scope.confirmReceiptOrder = function (orderId) {
+        $http({
+            url: 'http://localhost:5555/core/api/v1/orders/receive/' + orderId,
+            method: 'GET',
+
+        }).then(function (response) {
+            $scope.loadOrders($scope.currentPage);
+        });
+    }
+
 
     $scope.loadOrders();
 

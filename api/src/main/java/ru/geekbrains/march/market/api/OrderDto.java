@@ -16,6 +16,12 @@ public class OrderDto {
     @Schema(description = "Имя пользователя", required = true, example = "Bob")
     private String username;
 
+    @Schema(description = "ID Статус заказа", required = true, example = "ORDER_DELIVERED")
+    private String status;
+
+    @Schema(description = "Статус заказа", required = true, example = "Заказ ожидает оплаты")
+    private String status_title;
+
     @Schema(description = "Суммарная стоимость продуктов в заказе", required = true, example = "21412.20")
     private BigDecimal totalPrice;
 
@@ -31,13 +37,35 @@ public class OrderDto {
     public OrderDto() {
     }
 
-    public OrderDto(Long id, String username, BigDecimal totalPrice, List<OrderItemDto> items, String deliverAddress, LocalDateTime createdAt) {
+    public OrderDto(Long id, String username, String status, String status_title, BigDecimal totalPrice, List<OrderItemDto> items, String deliverAddress, LocalDateTime createdAt) {
         this.id = id;
         this.username = username;
+        this.status = status;
+        this.status_title = status_title;
         this.totalPrice = totalPrice;
         this.items = items;
         this.deliverAddress = deliverAddress;
         this.createdAt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(createdAt);
+    }
+
+    public String getStatus_title() {
+        return status_title;
+    }
+
+    public void setStatus_title(String status_title) {
+        this.status_title = status_title;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Long getId() {

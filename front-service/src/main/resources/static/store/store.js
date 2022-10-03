@@ -18,14 +18,16 @@ angular.module('market').controller('storeController', function ($rootScope, $sc
             $scope.totalElements = response.data.totalElements;
             $scope.pageNumbers = range(1, $scope.totalPages);
         });
-        if (page === 1)
-            document.getElementById("prev").classList.add("disabled")
-        else
-            document.getElementById("prev").classList.remove("disabled")
-        if (page === ($scope.totalPages))
-            document.getElementById("next").classList.add("disabled")
-        else
-            document.getElementById("next").classList.remove("disabled")
+        if ($scope.totalPages !== 1) {
+            if (page === 1)
+                document.getElementById("prev").classList.add("disabled")
+            else
+                document.getElementById("prev").classList.remove("disabled")
+            if (page === ($scope.totalPages))
+                document.getElementById("next").classList.add("disabled")
+            else
+                document.getElementById("next").classList.remove("disabled")
+        }
 
         $http({
             url: 'http://localhost:5555/core/api/v1/categories',
@@ -43,7 +45,7 @@ angular.module('market').controller('storeController', function ($rootScope, $sc
 
     $scope.resetFilters = function () {
         $scope.filter = null;
-        $scope.loadProducts();
+        $scope.loadProducts(1);
     }
 
     $scope.loadProducts();

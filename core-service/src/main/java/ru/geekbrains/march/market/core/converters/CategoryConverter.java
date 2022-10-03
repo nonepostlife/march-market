@@ -7,9 +7,6 @@ import ru.geekbrains.march.market.core.entities.Category;
 @Component
 public class CategoryConverter {
     public CategoryDto entityToDto(Category c) {
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setId(c.getId());
-        categoryDto.setTitle(c.getTitle());
-        return categoryDto;
+        return new CategoryDto(c.getId(), c.getTitle());
     }
 }

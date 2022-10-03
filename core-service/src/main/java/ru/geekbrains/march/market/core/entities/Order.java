@@ -23,6 +23,9 @@ public class Order {
     @JoinColumn(name = "username")
     private String username;
 
+    @JoinColumn(name = "status")
+    private String status;
+
     @Column(name = "total_price")
     private BigDecimal totalPrice;
 

@@ -35,7 +35,8 @@
                     <a class="nav-link" href="#!/orders">Мои заказы</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link justify-content-end" ng-show="!isUserLoggedIn()" href="#!/auth">Войти / Зарегистрироваться</a>
+                    <a class="nav-link justify-content-end" ng-show="!isUserLoggedIn()" href="#!/auth">Войти /
+                        Зарегистрироваться</a>
                 </li>
                 <li class="nav-item justify-content-end" ng-show="isUserLoggedIn()" style="padding: 4px;">
                     <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Выйти</button>
@@ -52,7 +53,11 @@
     <script src="orders/orders.js"></script>
     <script src="welcome/welcome.js"></script>
     <script src="auth/auth.js"></script>
+    <script src="order_pay/order_pay.js"></script>
     <script src="register/register.js"></script>
+    <script
+            src="https://www.paypal.com/sdk/js?client-id=AZX9sEz_m_KSN8L6yOcKLZMq4BJ5bJ1uRpNzPE_5PqswQIRysphIDBii578puqKFxEEP-3QoK5O6Kk94&currency=RUB">
+    </script>
 </div>
 </body>
 </html>
